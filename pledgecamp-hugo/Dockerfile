@@ -1,37 +1,31 @@
-FROM alpine:3.9
+FROM ubuntu:bionic
 
-ENV HUGO_VERSION 0.55.4
+ENV GO_VERSION 1.13.6
+ENV HUGO_VERSION 0.62.2
 ENV SOURCE_DIR /src
 
-# Supporting packages
-# Below, set unsafe is because there is no uid/gid
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-    apk --update add \
-    curl \
-    g++ \
-    gcc \
-    git \
-    go \
-    libc-dev \
-    make \
-    musl-dev \
-    nodejs \
-    npm \
-    openssh && \
-    npm config set unsafe-perm true && \
-    npm i -g postcss-cli
+RUN apt-get update && apt-get upgrade -y \
+&& apt-get install \
+  curl \
+  gcc \
+  g++
 
 # Adding GO paths to environment
-ENV PATH "$PATH:$HOME/go/bin"
-ENV GOPATH "$HOME/go"
+ENV PATH "$PATH:/usr/local/go/bin"
+ENV GOPATH "/usr/local/go"
 ENV GOHOME "$GOPATH"
 
-# Install Hugo Static Site Generator
 WORKDIR /tmp
-RUN git clone --single-branch --branch release-${HUGO_VERSION} https://github.com/gohugoio/hugo.git && \
-  cd hugo && \
-  go install --tags extended \
-  && rm -R /tmp/release-${HUGO_VERSION}
+RUN curl -sL https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -o go.tar.gz \
+  && tar -C /usr/local -xzf go.tar.gz
+
+# Install Hugo Static Site Generator
+
+RUN curl -sL https://github.com/gohugoio/hugo/archive/v${HUGO_VERSION}.tar.gz -o hugo.tar.gz \
+&& tar xvf hugo.tar.gz \
+&& cd hugo-${HUGO_VERSION} \
+&& go install --tags extended \
+&& rm -R /tmp/hugo-${HUGO_VERSION}
 
 WORKDIR ${SOURCE_DIR}
 CMD ["hugo", "server", "-D"]
