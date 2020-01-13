@@ -4,6 +4,7 @@ ENV HUGO_VERSION 0.55.4
 ENV SOURCE_DIR /src
 
 # Supporting packages
+# Below, set unsafe is because there is no uid/gid
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     apk --update add \
     curl \
@@ -17,6 +18,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
     nodejs \
     npm \
     openssh && \
+    npm config set unsafe-perm true && \
     npm i -g postcss-cli
 
 # Adding GO paths to environment
