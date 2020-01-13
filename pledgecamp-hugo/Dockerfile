@@ -1,6 +1,7 @@
 FROM alpine:3.9
 
 ENV HUGO_VERSION 0.55.4
+ENV SOURCE_DIR /src
 
 # Supporting packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
@@ -29,3 +30,6 @@ RUN git clone --single-branch --branch release-${HUGO_VERSION} https://github.co
   cd hugo && \
   go install --tags extended \
   && rm -R /tmp/release-${HUGO_VERSION}
+
+WORKDIR ${SOURCE_DIR}
+CMD ["hugo", "server", "-D"]

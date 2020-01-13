@@ -1,5 +1,7 @@
 FROM ubuntu:bionic
 
+ENV SOURCE_DIR /src
+
 LABEL maintainer="contact@simonball.me" \
       description="A simple Python3 environment in Ubuntu"
 
@@ -14,3 +16,5 @@ RUN apt-get update && apt-get upgrade --quiet -y && apt-get install --fix-missin
 && \
 pip3 install \
   pipenv
+
+WORKDIR ${SOURCE_DIR}
