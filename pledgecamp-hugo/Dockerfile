@@ -5,7 +5,7 @@ ENV HUGO_VERSION 0.62.2
 ENV SOURCE_DIR /src
 
 RUN apt-get update && apt-get upgrade -y \
-&& apt-get install \
+&& apt-get install -y \
   curl \
   gcc \
   g++
