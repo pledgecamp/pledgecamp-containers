@@ -1,6 +1,5 @@
 FROM pledgecamp/python
 
-COPY . /src
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN \
