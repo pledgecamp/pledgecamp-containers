@@ -9,13 +9,13 @@ FILE=/pledgecamp/DB_SETUP
 if [ -f "$FILE" ]; then
     echo "No need to bootstrap DB"
 else
-    rm -rf migrations/
-    pipenv run python manage.py db init
-    mv ./temp.mako migrations/script.py.mako
+    echo "running DB migrations and setup by fixtures"
     pipenv run python manage.py db migrate
     pipenv run python manage.py db upgrade
     pipenv run python "./scripts/db_populate.py"
-    pipenv run python "./scripts/cache_warmup.py"
     touch /pledgecamp/DB_SETUP
 fi
+echo "Warm up cache"
+pipenv run python "./scripts/cache_warmup.py"
+echo "Run application"
 pipenv run python application.py
