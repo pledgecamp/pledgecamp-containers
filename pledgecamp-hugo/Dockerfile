@@ -1,14 +1,15 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
-ENV GO_VERSION 1.13.6
-ENV HUGO_VERSION 0.62.2
+ENV HUGO_VERSION 0.70.0
 ENV SOURCE_DIR /src
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get upgrade -y \
 && apt-get install -y \
   curl \
   gcc \
-  g++
+  g++ \
+  golang
 
 # Adding GO paths to environment
 ENV PATH "$PATH:/usr/local/go/bin"
@@ -16,16 +17,15 @@ ENV GOPATH "/usr/local/go"
 ENV GOHOME "$GOPATH"
 
 WORKDIR /tmp
-RUN curl -sL https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -o go.tar.gz \
-  && tar -C /usr/local -xzf go.tar.gz
-
 # Install Hugo Static Site Generator
-
-RUN curl -sL https://github.com/gohugoio/hugo/archive/v${HUGO_VERSION}.tar.gz -o hugo.tar.gz \
-&& tar xvf hugo.tar.gz \
-&& cd hugo-${HUGO_VERSION} \
-&& go install --tags extended \
-&& rm -R /tmp/hugo-${HUGO_VERSION}
+RUN \
+ln -fs /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime && \
+dpkg-reconfigure --frontend noninteractive tzdata && \
+curl -sL https://github.com/gohugoio/hugo/archive/v${HUGO_VERSION}.tar.gz -o hugo.tar.gz && \
+tar xvf hugo.tar.gz && \
+cd hugo-${HUGO_VERSION} && \
+go install --tags extended && \
+rm -R /tmp/hugo-${HUGO_VERSION}
 
 WORKDIR ${SOURCE_DIR}
 CMD ["hugo", "server", "-D"]

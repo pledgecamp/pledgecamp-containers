@@ -1,7 +1,7 @@
 FROM debian:stable
 
 ENV SOURCE_DIR /src
-ENV CYPRESS_VERSION 3.8.2
+ENV CYPRESS_VERSION 4.5.0
 USER root
 
 # allow installing when the main user is root
