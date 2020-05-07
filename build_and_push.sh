@@ -35,6 +35,17 @@ cd pledgecamp-nodejs \
 
 echo ''
 echo ''
+echo '##########################'
+echo '### NODEJS WITH CYPRESS###'
+echo '##########################'
+echo ''
+cd pledgecamp-nodejs-cypress \
+  && docker build -t pledgecamp/nodejs:cypress . \
+  && docker push pledgecamp/nodejs:cypress \
+  && cd  ..
+
+echo ''
+echo ''
 echo '############'
 echo '### HUGO ###'
 echo '############'
