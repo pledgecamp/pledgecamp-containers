@@ -18,7 +18,10 @@ mkdir -p $NVM_DIR && \
 apt-get update && \
 apt-get upgrade --quiet -y && \
 apt-get install --quiet -y \
-  curl
+  build-essential \
+  curl \
+  git \
+  python3
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 RUN source $NVM_DIR/nvm.sh && \
