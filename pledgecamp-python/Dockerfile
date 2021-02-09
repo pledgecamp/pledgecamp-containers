@@ -16,6 +16,7 @@ RUN apt-get update && apt-get upgrade --quiet -y && apt-get install --fix-missin
   build-essential \
   curl \
   git \
+  libffi-dev \
   libreadline-dev \
   libsqlite3-dev \
   libssl-dev \
@@ -30,6 +31,7 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 # Setup python
 RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv \
   && pyenv install $PYTHON_VERSION \
-  && pyenv global $PYTHON_VERSION
+  && pyenv global $PYTHON_VERSION \
+  && pip install poetry pipenv
 
 WORKDIR ${SOURCE_DIR}
